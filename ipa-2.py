@@ -47,10 +47,7 @@ def shift_letter(letter, shift):
     if letter != " ":
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         lettervalue = alphabet.index(letter)
-        if shift+lettervalue <= 27:
-            shiftletter = alphabet[shift+lettervalue]
-        elif shift+lettervalue >= 27:
-            shiftletter = alphabet[(shift+lettervalue)-27]
+        shiftletter = alphabet[(shift+lettervalue) % 26]
     else:
         shiftletter = " "
     return shiftletter
@@ -85,8 +82,6 @@ def caesar_cipher(message, shift):
                 shiftletter = " "
             caesarcipher = caesarcipher + shiftletter
     return caesarcipher
-    
-          
 
 def shift_by_letter(letter, letter_shift):
     '''Shift By Letter.
@@ -120,10 +115,7 @@ def shift_by_letter(letter, letter_shift):
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         lettervalue = alphabet.index(letter)
         lettershiftvalue = alphabet.index(letter_shift)
-        if lettershiftvalue+lettervalue <= 27:
-            shiftletter = alphabet[lettershiftvalue+lettervalue]
-        elif lettershiftvalue+lettervalue >= 27:
-            shiftletter = alphabet[(lettershiftvalue+lettervalue)-27]
+        shiftletter = alphabet[(lettershiftvalue+lettervalue) % 26]
     else:
         shiftletter = " "
     return shiftletter
