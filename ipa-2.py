@@ -44,13 +44,11 @@ def shift_letter(letter, shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    lettervalue = alphabet.index(letter)
-    if shift+lettervalue <= 27:
-        shiftletter = alphabet[shift+lettervalue]
-    elif shift+lettervalue >= 27:
-        shiftletter = alphabet[(shift+lettervalue)-27]
-    elif letter == " ":
+    if letter != " ":
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        lettervalue = alphabet.index(letter)
+        shiftletter = alphabet[(shift+lettervalue) % 26]
+    else:
         shiftletter = " "
     return shiftletter
 
@@ -79,16 +77,11 @@ def caesar_cipher(message, shift):
     for letter in message:
             if letter != " ":
                 lettervalue = alphabet.index(letter)
-                if shift+lettervalue < 25:
-                    shiftletter = alphabet[shift+lettervalue]
-                elif shift+lettervalue > 25:
-                    shiftletter = alphabet[(shift+lettervalue)-26]
+                shiftletter = alphabet[(lettervalue + shift) % 26]
             else:
                 shiftletter = " "
             caesarcipher = caesarcipher + shiftletter
     return caesarcipher
-    
-          
 
 def shift_by_letter(letter, letter_shift):
     '''Shift By Letter.
@@ -118,14 +111,12 @@ def shift_by_letter(letter, letter_shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    lettervalue = alphabet.index(letter)
-    lettershiftvalue = alphabet.index(letter_shift)
-    if lettershiftvalue+lettervalue <= 27:
-        shiftletter = alphabet[lettershiftvalue+lettervalue]
-    elif lettershiftvalue+lettervalue >= 27:
-        shiftletter = alphabet[(lettershiftvalue+lettervalue)-27]
-    elif letter == " ":
+    if letter != " ":
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        lettervalue = alphabet.index(letter)
+        lettershiftvalue = alphabet.index(letter_shift)
+        shiftletter = alphabet[(lettershiftvalue+lettervalue) % 26]
+    else:
         shiftletter = " "
     return shiftletter
 
@@ -172,10 +163,7 @@ def vigenere_cipher(message, key):
                 keyletter = repeatstring[i]
                 lettershiftvalue = alphabet.index(keyletter)
                 lettervalue = alphabet.index(letter)
-                if lettershiftvalue+lettervalue < 25:
-                    shiftletter = alphabet[lettershiftvalue+lettervalue]
-                elif lettershiftvalue+lettervalue > 25:
-                    shiftletter = alphabet[(lettershiftvalue+lettervalue)-26]
+                shiftletter = alphabet[(lettershiftvalue + lettervalue) % 26]
             else:
                 shiftletter = " "
             vigenerecipher = vigenerecipher + shiftletter
@@ -275,8 +263,6 @@ def scytale_decipher(message, shift):
     
     scytaledecipher = ""
     for i in range(len(message)):
-        char = message[((i % shift) * (len(message) // shift)) + (i // shift)]
-        scytaledecipher = scytaledecipher + char
-        
-    msg = scytaledecipher.rstrip("_")
-    return msg
+        char = message[(i // (len(message) // shift)) + (i % (len(message) // shift)) * shift]
+        scytaledecipher += char
+    return scytaledecipher
