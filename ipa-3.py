@@ -41,12 +41,12 @@ def relationship_status(from_member, to_member, social_graph):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    if to_member in social_graph[from_member]["following"]:
-        status = "follower"
+    if to_member in social_graph[from_member]["following"] and from_member in social_graph[to_member]["following"]:
+        status = "friends"
     elif from_member in social_graph[to_member]["following"]:
         status = "followed by"
-    elif to_member in social_graph[from_member]["following"] and from_member in social_graph[to_member]["following"]:
-        status = "friends"
+    elif to_member in social_graph[from_member]["following"]:
+        status = "follower"
     else:
         status = "no relationship"
     return status
@@ -95,12 +95,13 @@ def tic_tac_toe(board):
     
     rdiag = []
     for i in range(len(board)):
-        if board[i][len(board)-i] != "":
+        if board[i][len(board)-1-i] != "":
             rdiag.append(board[i][len(board)-1-i])
     if all(symbol == rdiag[0] for symbol in rdiag):
         win = rdiag[0]
 
     return win
+
 
 def eta(first_stop, second_stop, route_map):
     '''ETA.
@@ -133,18 +134,22 @@ def eta(first_stop, second_stop, route_map):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    firststop = list(route_map.keys()).index(first_stop)
-    secondstop = list(route_map.keys()).index(second_stop)
+    for i, (start, end) in enumerate(route_map.keys()):
+        if start == first_stop:
+            firststop = i
+        if end == second_stop:
+            secondstop = i
+
     totaltraveltime = 0
-    if firststop != secondstop:
-        if first_stop < secondstop:
-            for i in range(firststop, secondstop):
-                totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
-        else:
-            for i in range(firststop, len(route_map)):
-                totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
-            for i in range(0, secondstop):
-                totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
+    if firststop <= secondstop:
+        for i in range(firststop, secondstop):
+            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
     else:
-        totaltraveltime = 0
+        for i in range(firststop, len(route_map)):
+            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
+        for i in range(0, secondstop):
+            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
+
     return totaltraveltime
+
+
