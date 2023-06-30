@@ -81,23 +81,19 @@ def tic_tac_toe(board):
     win = "NO WINNER"
 
     for row in board:
-        if all(symbol == row[0] for symbol in row):
+        if "" not in row and all(symbol == row[0] for symbol in row):
             win = row[0]
+
     for col in zip(*board):
-        if all(symbol == col[0] for symbol in col):
+        if "" not in col and all(symbol == col[0] for symbol in col):
             win = col[0]
-    ldiag = []
-    for i in range(len(board)):
-        if board[i][i] != "":
-            ldiag.append(board[i][i])
-    if all(symbol == ldiag[0] for symbol in ldiag):
+
+    ldiag = [board[i][i] for i in range(len(board))]
+    if "" not in ldiag and len(set(ldiag)) == 1:
         win = ldiag[0]
-    
-    rdiag = []
-    for i in range(len(board)):
-        if board[i][len(board)-1-i] != "":
-            rdiag.append(board[i][len(board)-1-i])
-    if all(symbol == rdiag[0] for symbol in rdiag):
+
+    rdiag = [board[i][len(board) - 1 - i] for i in range(len(board))]
+    if "" not in rdiag and len(set(rdiag)) == 1:
         win = rdiag[0]
 
     return win
@@ -134,22 +130,25 @@ def eta(first_stop, second_stop, route_map):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    for i, (start, end) in enumerate(route_map.keys()):
-        if start == first_stop:
-            firststop = i
-        if end == second_stop:
-            secondstop = i
+    if first_stop == second_stop:
+        return 0
+
+    stops = set()
+    for leg in route_map:
+        stops.add(leg[0])
+        stops.add(leg[1])
 
     totaltraveltime = 0
-    if firststop <= secondstop:
-        for i in range(firststop, secondstop):
-            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
-    else:
-        for i in range(firststop, len(route_map)):
-            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
-        for i in range(0, secondstop):
-            totaltraveltime += route_map[list(route_map.keys())[i]]["travel_time_mins"]
+    current_stop = first_stop
+
+    while current_stop != second_stop:
+        found = False
+        for leg in route_map:
+            if leg[0] == current_stop:
+                totaltraveltime += route_map[leg]["travel_time_mins"]
+                current_stop = leg[1]
+                found = True
+                break
 
     return totaltraveltime
-
 
